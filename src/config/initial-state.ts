@@ -1,5 +1,8 @@
-import State from "./types/state";
-import teams from "../data/teams.json";
+/**
+ * Starting state of the program, remove more clutter from the main files.
+ */
+import State, { Status } from "./types/state";
+import whoReadWhat from "../data/who-read-what.json";
 
 const initialState: State = {
   current: {
@@ -11,7 +14,10 @@ const initialState: State = {
       playerIndex: 0,
       teamIndex: 0,
     },
-    onDeckName: teams[0][1].name,
+    onDeck: {
+      name: whoReadWhat[0][1].name,
+      status: Status.Normal,
+    },
     round: 1,
   },
   history: [],

@@ -1,46 +1,62 @@
+"""Convert CSV for who read what to JSON for front end."""
+from json import dump, loads
+
 from pandas import read_csv
-from json import dumps
 
-teams = (
-    (
-        "Snowplow",
-        "Aardvark",
-        "Windowsill",
-    ),
-    (
-        "Noone",
-        "Someone",
-        "Spinach",
-    )
-)
 
-who = read_csv("who.csv")  # This doesn't exist in the demo
-people = {}
+def which_books(frame):
+    """Dict showing who read what book, with T/F values"""
+    first_col_name = frame.columns[0]
+    return frame.set_index(first_col_name).T.to_dict("list")
 
-for i in range(27):
-    name_one_block = who.iloc[i, 0]
-    name_one = name_one_block.split("-")[0]
-    books_one = [i for i, item in enumerate(who.iloc[i, 1:11]) if item]
-    
-    if len(books_one) > 0:
-        people[name_one] = books_one
 
-    name_two_block = who.iloc[i, 12]
-    if name_two_block == name_two_block:
-        name_two = name_two_block.split("-")[0]
-        books_two = [i for i, item in enumerate(who.iloc[i, 13:23]) if item]
-        
-        if len(books_two) > 0:
-            people[name_two] = books_two
+# TODO make these two fns vectorized as part of which_books()?
 
-teams_with_books = [[], []]
 
-for t in range(2):
-    for name in teams[t]:
-        teams_with_books[t].append({
-            "name": name,
-            "books": people[name]
-        })
+def person(name_raw):
+    """Take away number from name, if present"""
+    return name_raw.split("-")[0]
 
-print(dumps(teams_with_books))
 
+def books(books_raw):
+    """Generate array of book indices from raw true/false array"""
+    return [b for b, book in enumerate(books_raw) if book]
+
+
+def main():
+    """Main function."""
+    who = read_csv("who.csv")
+
+    # There are two chunks that need to be appended together
+    # The second is shorter and requires notna() checking
+    first = which_books(who.iloc[:, :11])
+    second = which_books(who.iloc[:, 12:][who.iloc[:, 12].notna()])
+    people_raw = first | second
+
+    people = {
+        person(person_raw): books(books_raw)
+        for person_raw, books_raw in people_raw.items()
+    }
+
+    # Assign people into teams
+    with open("teams.json", "r", encoding="utf-8") as teams_file:
+        txt = teams_file.read()
+        teams = loads(txt)
+
+    teams_with_books = [[], []]
+
+    for t in range(2):
+        for name in teams[t]:
+            teams_with_books[t].append({"name": name, "books": people[name]})
+
+    # Send the output to the front end
+    with open(
+        "../src/data/who-read-what.json",
+        "w",
+        encoding="utf-8",
+    ) as who_file:
+        dump(teams_with_books, who_file)
+
+
+if __name__ == "__main__":
+    main()

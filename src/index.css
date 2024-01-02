@@ -1,3 +1,8 @@
+/**
+ * CSS to set global settings and scrollbars.
+ *
+ * All else is handled with CSS in JS inside the UI folder.
+ */
 * {
   font-family: "Raleway", sans-serif;
   -webkit-touch-callout: none;

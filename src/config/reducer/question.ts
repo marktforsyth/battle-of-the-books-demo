@@ -1,4 +1,7 @@
-import { chooseRandom, indices } from "../../shared-logic/main";
+/**
+ * Helper functions to get new questions and books.
+ */
+import { chooseRandom, indices } from "../../shared-logic/collection";
 import { Player, Question, Situation } from "../types/state";
 import questionsByBook from "../../data/questions-by-book.json";
 import { situationsWithPlayer } from "./player";
@@ -20,6 +23,7 @@ const newQuestionSameBook = (
   history: Situation[],
   bookIndex: number,
 ): Question => {
+  // Make sure we don't get the same question twice, even though same book
   const unusedQuestionIndices = unusedQuestionIndicesByBook(history);
   const nextQuestionIndex = chooseRandom(unusedQuestionIndices[bookIndex]);
 
@@ -46,9 +50,6 @@ const nextQuestionForPlayer = (
   const nextBookIndex = chooseRandom(availableBooks);
 
   if (unusedQuestionIndices[nextBookIndex] === undefined) {
-    console.log(unusedQuestionIndices);
-    console.log(nextBookIndex);
-    console.log(availableBooks);
     throw Error(
       "We ran out of questions; this should never happen in a real game",
     );

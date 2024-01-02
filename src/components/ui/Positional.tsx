@@ -1,3 +1,9 @@
+/**
+ * Element to position other elements.
+ *
+ * Usually for absolute positioning, like of the command bar. Feels a little
+ * ineligant compared to the rest of the UI; could definitely use some polish.
+ */
 import { PropsWithChildren, ReactElement } from "react";
 
 const Positional = ({

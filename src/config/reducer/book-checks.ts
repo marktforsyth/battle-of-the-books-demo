@@ -1,5 +1,9 @@
+/**
+ * Helper functions for question.ts to make sure we don't give redundant or
+ * unanswerable questions.
+ */
 import { Player, Situation } from "../types/state";
-import teams from "../../data/teams.json";
+import whoReadWhat from "../../data/who-read-what.json";
 
 namespace Book {
   export const unused = (
@@ -8,7 +12,7 @@ namespace Book {
   ): boolean => unusedQuestionIndices[b].length > 0;
 
   export const read = (b: number, player: Player): boolean =>
-    teams[player.teamIndex][player.playerIndex].books.indexOf(b) !== -1;
+    whoReadWhat[player.teamIndex][player.playerIndex].books.indexOf(b) !== -1;
 
   export const notJustUsed = (b: number, currentBookIndex: number): boolean =>
     b !== currentBookIndex;

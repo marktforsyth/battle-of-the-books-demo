@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 src/data
+# parser/*.csv
+# parser/*.json
+venv
+.ropeproject

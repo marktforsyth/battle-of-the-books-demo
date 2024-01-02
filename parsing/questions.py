@@ -1,32 +1,50 @@
-from pandas import read_csv
+"""Convert questions CSV to data for front end."""
 from json import dump
 
-questions = read_csv("questions.csv")
+from pandas import read_csv
 
-books = [
-  "This Very Tree",
-  "The Great Stink",
-  "Clementine",
-  "Roller Girl",
-  "Escape from Mr.",
-  "Bad Beginnings",
-  "Enola Holmes",
-  "They Called Us Enemy",
-  "Inheritance Games",
-  "Guernsey Literary"
-]
 
-out = []
+def main():
+    """Main function."""
+    questions_books = read_csv("questions.csv")
+    books = {}
 
-for b in range(len(books)):
-    out.append([])
+    for _, row in questions_books.iterrows():
+        question = row["Question"].strip()
+        book = row["Book"]
 
-    questions_for_book = questions.loc[
-        questions["Book"] == books[b]
-    ]["Question"]
+        if book not in books:
+            books[book] = [question]
+        else:
+            books[book].append(question)
 
-    final_questions = [question.strip() for question in list(questions_for_book)]
-    out[b] = final_questions
+    # Format it into two files for the front end
 
-with open("../src/data/questions-by-book.json", "w") as question_file:
-    dump(out, question_file)
+    # TODO change the front end to make this step unnecessary, because a dict
+    # feels cleaner than two arrays
+    out_books = []
+    out_questions = []
+
+    for book, questions in books.items():
+        out_books.append(book)
+        out_questions.append(questions)
+
+    # Push the data to their needed files
+
+    with open(
+        "../src/data/questions-by-book.json",
+        "w",
+        encoding="utf-8",
+    ) as question_file:
+        dump(out_questions, question_file)
+
+    with open(
+        "../src/data/books.json",
+        "w",
+        encoding="utf-8",
+    ) as book_file:
+        dump(out_books, book_file)
+
+
+if __name__ == "__main__":
+    main()

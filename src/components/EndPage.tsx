@@ -1,3 +1,9 @@
+/**
+ * Page that shows when we're all done!
+ *
+ * For a project with so little navigation, I'm not bothering with
+ * react-router-dom. This is just shown with a conditional.
+ */
 import { ReactElement } from "react";
 import Column from "./ui/Column";
 import { Alignment, Justification } from "../config/types/style/position";

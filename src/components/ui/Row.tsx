@@ -1,3 +1,6 @@
+/**
+ * CSS flex row, with strict rules (enums for align/justify).
+ */
 import { PropsWithChildren, ReactElement } from "react";
 import Size from "../../config/types/style/size";
 import { Alignment, Justification } from "../../config/types/style/position";

@@ -1,3 +1,6 @@
+/**
+ * Question and answer (book), which update based on CmdBar interaction.
+*/
 import { ReactElement } from "react";
 import State from "../config/types/state";
 
@@ -20,11 +23,10 @@ const QuestionAnswer = ({ state }: { state: State }): ReactElement => (
           <Txt quiet size={TextData.Size.Small} val="QUESTION" />
         </Row>
         <Txt
-          val={`In what book ${
-            questionsByBook[state.current.question.bookIndex][
-              state.current.question.questionIndex
-            ]
-          }`}
+          val={`In what book ${questionsByBook[state.current.question.bookIndex][
+            state.current.question.questionIndex
+          ]
+            }`}
         />
       </Column>
     </Slab>

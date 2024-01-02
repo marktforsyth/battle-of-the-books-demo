@@ -1,23 +1,22 @@
+/**
+ * The central reducer, with components broken up across the entire directory.
+ */
 import Action from "../types/action";
 import State from "../types/state";
-import { last } from "../../shared-logic/main";
-import { nextAtBat } from "./player";
+import { last } from "../../shared-logic/collection";
+import { atBat } from "./player";
 import { newQuestionSameBook, nextQuestionForPlayer } from "./question";
 import initialState from "../initial-state";
-
-import teams from "../../data/teams.json";
 
 const reducer = (state: State, action: Action): State => {
   switch (action) {
     case Action.Next: {
-      const [nextPlayer, nextRound] = nextAtBat(
+      const { nextPlayer, onDeck, nextRound } = atBat(
         state.current.player,
         state.current.round,
       );
-      const [onDeckPlayer, _onDeckRound] = nextAtBat(nextPlayer, nextRound);
 
       const nextHistory = [...state.history, state.current];
-
       const { questionIndex: nextQuestionIndex, bookIndex: nextBookIndex } =
         nextQuestionForPlayer(
           nextHistory,
@@ -32,8 +31,7 @@ const reducer = (state: State, action: Action): State => {
             bookIndex: nextBookIndex,
           },
           player: nextPlayer,
-          onDeckName:
-            teams[onDeckPlayer.teamIndex][onDeckPlayer.playerIndex].name,
+          onDeck: onDeck,
           round: nextRound,
         },
         history: nextHistory,
@@ -41,7 +39,6 @@ const reducer = (state: State, action: Action): State => {
     }
     case Action.TryAnother: {
       const nextHistory = [...state.history, state.current];
-
       const { questionIndex: nextQuestionIndex, bookIndex: nextBookIndex } =
         newQuestionSameBook(nextHistory, state.current.question.bookIndex);
 

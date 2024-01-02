@@ -1,3 +1,6 @@
+/**
+ * CSS Grid with defaults and strict (ish) rules.
+ */
 import { PropsWithChildren, ReactElement } from "react";
 import Size from "../../config/types/style/size";
 
