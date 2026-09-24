@@ -3,7 +3,7 @@
 A fun little family competition to test how well everyone knows these classic books.
 
 ## Run
-I use the `pandas` library of `python3` to parse the data, and `yarn` to run the front end.
+I used the `pandas` library of `python3` to parse the data, and `yarn` to run the front end.
 ```
 ./setup.sh
 yarn dev
@@ -29,20 +29,20 @@ To me this feels a little more straightforward and elegant, so I decided to copy
 
 ### Declarative Conditionals
 
-In this project I wanted to see how far I could push JS to make it more declarative and immutable.
+In this project I wanted to see how far I could push JS to make it more declarative in how the UI worked, so I decided to look for ways to mirror the declarative conditionals I see in other places.
 
-When I use Rust or Kotlin, I can create conditional expressions (`match`, `when`, etc.) without having gastly syntax (ternary operators). I wanted to see if I could replicate that in TypeScript.
+When I use Rust or Kotlin, I can create conditional expressions (`match`, `when`, etc.) without having gastly syntax (ternary operators), and the code acts like part of the UI layout--rather than having code outside of the layout that edits it. I wanted to see if I could replicate that in TypeScript.
 
 Unable to actually create my own overload for the `if` statement, I just made a function which takes:
   - The condition
   - What to return if true
   - What to return if false
 
-I made a similar function for `match`. These functions were...significantly worse than ternary operators (which is saying something!). So, I discontinued that. Now I just make a function whenever I need a conditional expression (which I've decided is always, because I'm stubborn and why not). It works great! Having to name things actually makes it more readable.
+I made a similar function for `match`. These functions were...significantly worse than ternary operators (which is saying something!). So, I discontinued that. Now I just make a function whenever I need a conditional expression. It works great! Having to name things actually makes it more readable.
 
 ### Typed Reducer Payloads
 
-I like global state systems. But when I first started using the reducer hook, my actions looked like this:
+I admire the organization of centralized state systems like Redux. But when I first started using the reducer hook, my actions looked like this:
 ```
 type Action = {
   command: string,
@@ -50,6 +50,6 @@ type Action = {
 }
 ```
 
-Combining all possible payload types with a union operator is certainly better than setting `payload` to type `any`, but it's still messy. What's more, letting `command` be a `string` makes it much easier to dispatch misspelled actions without the linter (or even the interpreter) catching the mistake.
+Combining all possible payload types with a union operator is certainly better than setting `payload` to type `any`, but I still think it could be better. What's more, letting `command` be a `string` makes it much easier to dispatch misspelled actions without the linter (or even the interpreter) catching the mistake.
 
-For this project, I used an `enum` to create the commands. If they had had payloads, I would have used a discriminated union (look in [thompcal](https://github.com/marktforsyth/thompcal-demo) for an elaborate example). This can be more lengthy, but much cleaner.
+For this project, I used an `enum` to create the commands. If they had had payloads, I would have used a discriminated union (look in [thompcal](https://github.com/marktforsyth/thompcal-demo) for an elaborate example).
